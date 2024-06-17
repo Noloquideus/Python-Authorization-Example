@@ -1,3 +1,5 @@
+from typing import Optional, List
+
 from pydantic import EmailStr, BaseModel, Field, StrictStr
 
 
@@ -23,3 +25,11 @@ class UserData(BaseModel):
     email: str
     username: str
     password_hash: str
+
+
+class UserDto(BaseModel):
+    id: Optional[int] = None
+    email: Optional[str] = None
+    username: Optional[str] = None
+    is_email_verified: Optional[bool] = None
+    refresh_tokens: Optional[List[str]] = None
