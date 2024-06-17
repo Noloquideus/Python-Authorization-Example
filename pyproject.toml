@@ -15,3 +15,31 @@ ruff = "^0.4.9"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint]
+line-length = 150
+path = "src"
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes errors
+    "W",    # pycodestyle warnings
+    "C",    # flake8-comprehensions
+    "B",    # flake8-bugbear
+    "I",    # isort
+    "UP",   # pyupgrade
+    "T10",  # flake8-debugger
+    "T20",  # flake8-print
+    "RUF",  # ruff-specific rules
+    "N",    # pep8-naming
+    "D",    # pydocstyle
+]
+
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+    "W191",  # indentation contains tabs
+]
+
+[tool.isort]
+profile = "black"
