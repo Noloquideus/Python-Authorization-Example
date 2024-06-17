@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
+from src.api.auth import auth_router
+
 
 @asynccontextmanager
 async def lifespan(_):
@@ -10,6 +12,7 @@ async def lifespan(_):
 
 
 app = FastAPI(title='Auth Service', description='Auth Service API', version='1.0.0', redoc_url=None, lifespan=lifespan)
+app.include_router(auth_router)
 
 
 @app.get("/")
