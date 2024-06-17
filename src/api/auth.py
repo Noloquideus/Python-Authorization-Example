@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from starlette import status
 from src.application.domain.user_domain import UserRegistration
+from src.application.services.user_service import UserService
+from src.infrastructure.database.models import User
 
 auth_router = APIRouter(
     prefix="/auth",
@@ -19,4 +21,5 @@ auth_router = APIRouter(
         status.HTTP_400_BAD_REQUEST: {"description": "Invalid input data"},
         status.HTTP_409_CONFLICT: {"description": "User already exists"}})
 async def register(user_data: UserRegistration):
-    pass
+    user: User = await UserService.create_user(user_data)
+    return user
