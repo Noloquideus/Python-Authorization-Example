@@ -17,3 +17,9 @@ class UserRegistration(BaseModel):
                                 min_length=8,
                                 max_length=64,
                                 examples=['password', 'password1', 'password2'])
+
+
+class UserData(BaseModel):
+    email: str
+    username: str
+    password_hash: str
