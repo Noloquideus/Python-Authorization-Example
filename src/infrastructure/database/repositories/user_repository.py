@@ -1,3 +1,4 @@
+from sqlalchemy import UUID
 from src.application.domain.user_domain import UserData
 from src.infrastructure.database.database import async_session_maker
 from src.infrastructure.database.models import User
