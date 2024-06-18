@@ -1,4 +1,8 @@
+import uuid
 from datetime import datetime, timedelta, timezone
+
+import jwt
+
 from src.application.domain.user_domain import UserDto
 from src.config import settings
 
@@ -21,4 +25,12 @@ class TokenService:
 
     @staticmethod
     async def create_refresh_token(user_id: str) -> str:
-        pass
+        refresh_token_id = uuid.uuid4()
+        expire_delta = timedelta(minutes=settings.REFRESH_TTL_MINUTES)
+        payload = {
+            "sub": user_id,
+            "jti": str(refresh_token_id),
+            "exp": datetime.now(timezone.utc) + expire_delta,
+        }
+        token = jwt.encode(payload, settings.REFRESH_SECRET_KEY, algorithm=settings.ALGORITHM)
+        return token
