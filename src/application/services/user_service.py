@@ -21,4 +21,6 @@ class UserService:
         access_token = AccessToken(access_token=await TokenService.create_access_token(user=user_dto))
         refresh_token = RefreshToken(refresh_token=await TokenService.create_refresh_token(user_id=user_dto.id))
 
+        await UserRepository.add_refresh_token(user_id=user.id, refresh_token=refresh_token.refresh_token)
+
         return UserResponse(user=user_dto, access_token=access_token, refresh_token=refresh_token)
