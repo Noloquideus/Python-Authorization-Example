@@ -5,5 +5,5 @@ class AccessToken(BaseModel):
     access_token: str
 
 
-class RefreshToken(AccessToken):
+class RefreshToken(BaseModel):
     refresh_token: str
