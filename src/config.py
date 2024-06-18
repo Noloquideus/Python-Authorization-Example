@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     DB_PASS: str
     DB_NAME: str
 
+    REDIS_HOST: str
+    REDIS_PORT: int
+
     ALGORITHM: str
     ACCESS_SECRET_KEY: str
     ACCESS_TTL_MINUTES: int
