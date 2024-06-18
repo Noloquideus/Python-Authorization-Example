@@ -1,6 +1,6 @@
 from typing import Optional, List
-
 from pydantic import EmailStr, BaseModel, Field, StrictStr
+from src.application.domain.jwt import AccessToken
 
 
 class UserRegistration(BaseModel):
@@ -34,3 +34,8 @@ class UserDto(BaseModel):
     access_level: Optional[int] = None
     is_email_verified: Optional[bool] = None
     refresh_tokens: Optional[List[str]] = None
+
+
+class UserResponse(BaseModel):
+    user: UserDto
+    tokens: AccessToken
