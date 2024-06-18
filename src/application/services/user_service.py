@@ -1,4 +1,4 @@
-from src.application.domain.jwt import RefreshToken
+from src.application.domain.jwt import RefreshToken, AccessToken
 from src.application.domain.user_domain import UserRegistration, UserData, UserDto, UserResponse
 from src.infrastructure.database.repositories.user_repository import UserRepository
 from src.infrastructure.utils.hash_service import HashService
@@ -18,7 +18,7 @@ class UserService:
                            access_level=user.access_level,
                            is_email_verified=user.is_email_verified)
 
-        tokens = RefreshToken(access_token=await TokenService.create_access_token(user=user_dto),
-                              refresh_token=await TokenService.create_refresh_token(user_id=user_dto.id))
+        access_token = AccessToken(access_token=await TokenService.create_access_token(user=user_dto))
+        refresh_token = RefreshToken(refresh_token=await TokenService.create_refresh_token(user_id=user_dto.id))
 
-        return UserResponse(user=user_dto, tokens=tokens)
+        return UserResponse(user=user_dto, access_token=access_token, refresh_token=refresh_token)
