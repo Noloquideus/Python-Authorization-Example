@@ -31,5 +31,6 @@ class UserDto(BaseModel):
     id: Optional[str] = None
     email: Optional[str] = None
     username: Optional[str] = None
+    access_level: Optional[int] = None
     is_email_verified: Optional[bool] = None
     refresh_tokens: Optional[List[str]] = None
