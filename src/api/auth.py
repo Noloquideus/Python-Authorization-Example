@@ -21,6 +21,6 @@ auth_router = APIRouter(
         status.HTTP_409_CONFLICT: {"description": "User already exists"}})
 async def register(response: Response, user_data: UserRegistration):
     user: UserResponse = await UserService.create_user(user_data)
-    response.set_cookie(key="access_token", value=user.refresh_token.refresh_token, httponly=True, secure=True, samesite="strict")
+    response.set_cookie(key="refresh_token", value=user.refresh_token.refresh_token, httponly=True, secure=True, samesite="strict")
     user.refresh_token.refresh_token = None
     return user
