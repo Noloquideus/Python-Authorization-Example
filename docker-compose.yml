@@ -31,3 +31,9 @@ services:
       - "80:80"
     depends_on:
       - auth_service
+
+  keydb:
+    container_name: keydb
+    image: eqalpha/keydb
+    ports:
+      - "6379:6379"
