@@ -1,6 +1,6 @@
 from typing import Optional, List
 from pydantic import EmailStr, BaseModel, Field, StrictStr
-from src.application.domain.jwt import AccessToken
+from src.application.domain.jwt import AccessToken, RefreshToken
 
 
 class UserRegistration(BaseModel):
@@ -38,4 +38,5 @@ class UserDto(BaseModel):
 
 class UserResponse(BaseModel):
     user: UserDto
-    tokens: AccessToken
+    access_token: AccessToken
+    refresh_token: RefreshToken
