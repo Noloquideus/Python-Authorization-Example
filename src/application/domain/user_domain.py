@@ -38,5 +38,5 @@ class UserDto(BaseModel):
 
 class UserResponse(BaseModel):
     user: UserDto
-    access_token: AccessToken
-    refresh_token: RefreshToken
+    access_token: Optional[AccessToken] = None
+    refresh_token: Optional[RefreshToken] = None
