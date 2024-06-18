@@ -11,3 +11,12 @@ class UserRepository:
             session.add(user_model)
             await session.commit()
             return user_model
+
+    @staticmethod
+    async def add_refresh_token(user_id: UUID, refresh_token: str) -> None:
+        async with async_session_maker() as session:
+            user = await session.get(User, user_id)
+            if user.refresh_tokens is None:
+                user.refresh_tokens = []
+            user.refresh_tokens.append(refresh_token)
+            await session.commit()
