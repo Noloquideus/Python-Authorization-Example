@@ -39,22 +39,22 @@ services:
       - "6379:6379"
 
   celery:
-    image: celery
-    build:
-      context: .
-    container_name: celery
-    command: sh -c "celery --app=src.infrastructure.tasks.tasks.celery:celery worker -l INFO"
-    env_file:
-      - .env
-    depends_on:
-      - keydb
+      image: celery
+      build:
+          context: .
+      container_name: celery
+      command: sh -c "celery --app=src.infrastructure.tasks.celery_app:celery worker -l INFO"
+      env_file:
+          - .env
+      depends_on:
+          - keydb
 
   flower:
     image: flower
     build:
       context: .
     container_name: flower
-    command: sh -c "celery --app=src.infrastructure.tasks.tasks.celery:celery worker flower"
+    command: sh -c "celery --app=src.infrastructure.tasks.celery_app:celery flower"
     env_file:
       - .env
     depends_on:
