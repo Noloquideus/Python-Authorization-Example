@@ -5,6 +5,7 @@ import jwt
 
 from src.application.domain.user_domain import UserDto
 from src.config import settings
+from src.exceptions import TokenTimeIsExpiredException, InvalidTokenException
 
 
 class TokenService:
@@ -44,3 +45,14 @@ class TokenService:
         }
         token = jwt.encode(payload, settings.CONFIRM_SECRET_KEY, algorithm=settings.ALGORITHM)
         return token
+
+    @staticmethod
+    async def decode_verify_token(token: str) -> dict:
+        try:
+            payload = jwt.decode(token, settings.CONFIRM_SECRET_KEY, algorithms=[settings.ALGORITHM])
+            expire_time = datetime.fromtimestamp(payload["exp"])
+            if expire_time < datetime.now(timezone.utc):
+                raise TokenTimeIsExpiredException
+            return payload
+        except jwt.DecodeError:
+            raise InvalidTokenException
