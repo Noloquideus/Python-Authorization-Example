@@ -48,6 +48,7 @@ services:
           - .env
       depends_on:
           - keydb
+          - auth_service
 
   flower:
     image: flower
@@ -59,5 +60,6 @@ services:
       - .env
     depends_on:
       - keydb
+      - auth_service
     ports:
       - "5555:5555"
