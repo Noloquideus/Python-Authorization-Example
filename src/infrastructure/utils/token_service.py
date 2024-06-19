@@ -34,3 +34,13 @@ class TokenService:
         }
         token = jwt.encode(payload, settings.REFRESH_SECRET_KEY, algorithm=settings.ALGORITHM)
         return token
+
+    @staticmethod
+    def create_verify_token(email: str) -> str:
+        expire_delta = timedelta(minutes=settings.CONFIRM_TTL_MINUTES)
+        payload = {
+            "sub": email,
+            "exp": datetime.now(timezone.utc) + expire_delta
+        }
+        token = jwt.encode(payload, settings.CONFIRM_SECRET_KEY, algorithm=settings.ALGORITHM)
+        return token
