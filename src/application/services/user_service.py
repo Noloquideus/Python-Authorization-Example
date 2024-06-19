@@ -1,5 +1,7 @@
 from src.application.domain.jwt import RefreshToken, AccessToken
 from src.application.domain.user_domain import UserRegistration, UserData, UserDto, UserResponse
+from src.exceptions import UserNotFoundByEmailException, UserNotFoundByUsernameException
+from src.infrastructure.database.models import User
 from src.infrastructure.database.repositories.user_repository import UserRepository
 from src.infrastructure.utils.hash_service import HashService
 from src.infrastructure.utils.token_service import TokenService
@@ -28,3 +30,13 @@ class UserService:
         await UserRepository.add_refresh_token(user_id=user.id, refresh_token=refresh_token.refresh_token)
 
         return UserResponse(user=user_dto, access_token=access_token, refresh_token=refresh_token)
+
+    @staticmethod
+    async def verify_user(token: str) -> User:
+        email = await TokenService.decode_verify_token(token)
+        user = await UserRepository.get_user_by_email(email)
+        if user is None:
+            raise UserNotFoundByEmailException
+        user.is_email_verified = True
+        await UserRepository.update_user(user)
+        return user
