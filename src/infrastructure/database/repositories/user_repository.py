@@ -43,5 +43,3 @@ class UserRepository:
         async with async_session_maker() as session:
             session.add(user)
             await session.commit()
-
-
