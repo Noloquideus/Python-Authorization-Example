@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     ACCESS_TTL_MINUTES: int
     REFRESH_SECRET_KEY: str
     REFRESH_TTL_MINUTES: int
+    CONFIRM_SECRET_KEY: str
+    CONFIRM_TTL_MINUTES:int
 
     @property
     def DATABASE_URL(self):
