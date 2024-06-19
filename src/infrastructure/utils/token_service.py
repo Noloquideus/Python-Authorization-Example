@@ -36,7 +36,7 @@ class TokenService:
         return token
 
     @staticmethod
-    def create_verify_token(email: str) -> str:
+    async def create_verify_token(email: str) -> str:
         expire_delta = timedelta(minutes=settings.CONFIRM_TTL_MINUTES)
         payload = {
             "sub": email,
