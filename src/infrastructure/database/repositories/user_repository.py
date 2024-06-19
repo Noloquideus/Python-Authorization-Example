@@ -27,3 +27,13 @@ class UserRepository:
                 user.refresh_tokens = []
             user.refresh_tokens.append(refresh_token)
             await session.commit()
+
+    @staticmethod
+    async def get_user_by_email(email: str) -> User:
+        async with async_session_maker() as session:
+            return await session.get(User, email)
+
+    @staticmethod
+    async def get_user_by_username(username: str) -> User:
+        async with async_session_maker() as session:
+            return await session.get(User, username)
