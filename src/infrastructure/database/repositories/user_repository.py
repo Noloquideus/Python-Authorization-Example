@@ -1,6 +1,6 @@
 from sqlalchemy import UUID
 from sqlalchemy.exc import IntegrityError
-from src.application.domain.user_domain import UserData
+from src.application.domain.user_domain import UserData, UserDto
 from src.exceptions import UserAlreadyExistsException
 from src.infrastructure.database.database import async_session_maker
 from src.infrastructure.database.models import User
@@ -37,3 +37,11 @@ class UserRepository:
     async def get_user_by_username(username: str) -> User:
         async with async_session_maker() as session:
             return await session.get(User, username)
+
+    @staticmethod
+    async def update_user(user: User) -> None:
+        async with async_session_maker() as session:
+            session.add(user)
+            await session.commit()
+
+
