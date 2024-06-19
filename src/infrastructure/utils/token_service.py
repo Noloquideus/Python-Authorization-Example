@@ -54,5 +54,7 @@ class TokenService:
             if expire_time < datetime.now(timezone.utc):
                 raise TokenTimeIsExpiredException
             return payload["sub"]
+        except jwt.ExpiredSignatureError:
+            raise TokenTimeIsExpiredException
         except jwt.DecodeError:
             raise InvalidTokenException
