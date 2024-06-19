@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Response
 from starlette import status
-from src.application.domain.user_domain import UserRegistration, UserResponse
+from src.application.domain.user_domain import UserRegistration, UserResponse, UserDto
 from src.application.services.user_service import UserService
+from src.infrastructure.utils.token_service import TokenService
 
 auth_router = APIRouter(
     prefix="/auth",
@@ -24,3 +25,17 @@ async def register(response: Response, user_data: UserRegistration):
     response.set_cookie(key="refresh_token", value=user.refresh_token.refresh_token, httponly=True, secure=True, samesite="strict")
     user.refresh_token.refresh_token = None
     return user
+
+
+@auth_router.get(
+    path='/verify',
+    status_code=status.HTTP_200_OK,
+    description='Verify email address using the provided token.',
+    summary='Verify email address',
+    response_description='Email verification status',
+    responses={
+        status.HTTP_200_OK: {"description": "Email successfully verified"},
+        status.HTTP_401_UNAUTHORIZED: {"description": "Invalid or expired token"},
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"}})
+async def verify(token: str):
+    return UserService.verify_user(token)
