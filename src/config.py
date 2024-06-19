@@ -1,5 +1,3 @@
-from typing import List
-
 from dotenv import load_dotenv, find_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
