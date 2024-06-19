@@ -43,7 +43,7 @@ services:
     build:
       context: .
     container_name: celery
-    command: sh -c "celery --app=src.infrastructure.tasks.celery:celery worker -l INFO"
+    command: sh -c "celery --app=src.infrastructure.tasks.tasks.celery:celery worker -l INFO"
     env_file:
       - .env
     depends_on:
@@ -53,8 +53,8 @@ services:
     image: flower
     build:
       context: .
-    container_name: booking_flower
-    command: sh -c "celery --app=src.infrastructure.tasks.celery:celery worker flower"
+    container_name: flower
+    command: sh -c "celery --app=src.infrastructure.tasks.tasks.celery:celery worker flower"
     env_file:
       - .env
     depends_on:
