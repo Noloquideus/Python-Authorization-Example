@@ -24,3 +24,13 @@ class InvalidTokenException(DefaultException):
 class UserNotFoundException(DefaultException):
     def __init__(self):
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+
+class UserNotFoundByEmailException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail="User not found by email")
+
+
+class UserNotFoundByUsernameException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail="User not found by username")
