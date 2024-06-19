@@ -37,3 +37,27 @@ services:
     image: eqalpha/keydb
     ports:
       - "6379:6379"
+
+  celery:
+    image: celery
+    build:
+      context: .
+    container_name: celery
+    command: sh -c "celery --app=src.infrastructure.tasks.celery:celery worker -l INFO"
+    env_file:
+      - .env
+    depends_on:
+      - keydb
+
+  flower:
+    image: flower
+    build:
+      context: .
+    container_name: booking_flower
+    command: sh -c "celery --app=src.infrastructure.tasks.celery:celery worker flower"
+    env_file:
+      - .env
+    depends_on:
+      - keydb
+    ports:
+      - "5555:5555"
