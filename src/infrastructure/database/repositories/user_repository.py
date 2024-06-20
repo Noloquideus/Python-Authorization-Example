@@ -1,4 +1,4 @@
-from sqlalchemy import UUID
+from sqlalchemy import UUID, select
 from sqlalchemy.exc import IntegrityError
 from src.application.domain.user_domain import UserData, UserDto
 from src.exceptions import UserAlreadyExistsException
@@ -31,13 +31,18 @@ class UserRepository:
     @staticmethod
     async def get_user_by_email(email: str) -> User:
         async with async_session_maker() as session:
-            return await session.get(User, email)
+            async with session.begin():
+                result = await session.execute(select(User).where(User.email == email))
+                user = result.scalars().first()
+                return user
 
     @staticmethod
     async def get_user_by_username(username: str) -> User:
         async with async_session_maker() as session:
-            return await session.get(User, username)
-
+            async with session.begin():
+                result = await session.execute(select(User).where(User.username == username))
+                user = result.scalars().first()
+                return user
     @staticmethod
     async def update_user(user: User) -> None:
         async with async_session_maker() as session:
