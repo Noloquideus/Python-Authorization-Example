@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
-from src.api.auth import auth_router
+from src.api.routing.auth import auth_router
 from src.infrastructure.cache.redis import init_redis
 from src.infrastructure.utils.init_superadmin import create_superadmin
 
