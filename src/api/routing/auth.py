@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, Request
 from starlette import status
-from src.application.domain.user_domain import UserRegistration, UserResponse, UserDto, UserLogin
+from src.application.domain.user_domain import UserRegistration, UserResponse, UserLogin
 from src.application.services.user_service import UserService
-from src.infrastructure.utils.token_service import TokenService
 
 auth_router = APIRouter(
     prefix="/auth",
@@ -56,3 +55,12 @@ async def login(response: Response, user_data: UserLogin):
         status.HTTP_404_NOT_FOUND: {"description": "User not found"}})
 async def verify(token: str):
     return UserService.verify_user(token)
+
+
+@auth_router.get('/create_tokens', status_code=status.HTTP_200_OK, description='Create new access and refresh tokens')
+async def create_tokens(response: Response, request: Request):
+    refresh_token = request.cookies.get('refresh_token')
+    user: UserResponse = await UserService.create_tokens(refresh_token)
+    response.set_cookie(key="refresh_token", value=user.refresh_token.refresh_token, httponly=True, secure=True, samesite="strict")
+    user.refresh_token.refresh_token = None
+    return user
