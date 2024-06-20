@@ -23,14 +23,15 @@ class UserRegistration(BaseModel):
 
 class UserLogin(BaseModel):
     login: Union[EmailStr, StrictStr] = Field(title='Login',
-                            description='Email or username of the user',
-                            examples=['example@example.com', 'username'])
+                                              description='Email or username of the user',
+                                              examples=['example@example.com', 'username'])
 
     password: StrictStr = Field(title='Password',
                                 description='The password of the user',
                                 min_length=8,
                                 max_length=64,
-                                examples=['password', 'password1', 'password2']
+                                examples=['password', 'password1', 'password2'])
+
 
 class UserData(BaseModel):
     email: str
