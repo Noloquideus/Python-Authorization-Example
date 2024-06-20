@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response
 from starlette import status
-from src.application.domain.user_domain import UserRegistration, UserResponse, UserDto
+from src.application.domain.user_domain import UserRegistration, UserResponse, UserDto, UserLogin
 from src.application.services.user_service import UserService
 from src.infrastructure.utils.token_service import TokenService
 
@@ -26,6 +26,22 @@ async def register(response: Response, user_data: UserRegistration):
     user.refresh_token.refresh_token = None
     return user
 
+
+@auth_router.post(
+    path='/login',
+    status_code=200,
+    description='Login a user by providing an email and password. Returns the logged in user\'s information excluding the password.',
+    summary='Login a user',
+    response_description='User and access and refresh tokens',
+    responses={
+        200: {"description": "User successfully logged in"},
+        401: {"description": "Invalid credentials"},
+        500: {"description": "Internal server error"}})
+async def login(response: Response, user_data: UserLogin):
+    user = await UserService.login(user_data)
+    response.set_cookie(key="refresh_token", value=user.refresh_token.refresh_token, httponly=True, secure=True, samesite="strict")
+    user.refresh_token.refresh_token = None
+    return user
 
 @auth_router.get(
     path='/verify',
