@@ -43,8 +43,24 @@ class UserRepository:
                 result = await session.execute(select(User).where(User.username == username))
                 user = result.scalars().first()
                 return user
+
+    @staticmethod
+    async def get_user_by_id(user_id: UUID) -> User:
+        async with async_session_maker() as session:
+            async with session.begin():
+                result = await session.execute(select(User).where(User.id == user_id))
+                user = result.scalars().first()
+                return user
+
     @staticmethod
     async def update_user(user: User) -> None:
         async with async_session_maker() as session:
             session.add(user)
+            await session.commit()
+
+    @staticmethod
+    async def delete_all_refresh_tokens(user_id: UUID) -> None:
+        async with async_session_maker() as session:
+            user = await session.get(User, user_id)
+            user.refresh_tokens = []
             await session.commit()
