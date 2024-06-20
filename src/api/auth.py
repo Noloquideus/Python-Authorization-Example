@@ -43,6 +43,7 @@ async def login(response: Response, user_data: UserLogin):
     user.refresh_token.refresh_token = None
     return user
 
+
 @auth_router.get(
     path='/verify',
     status_code=status.HTTP_200_OK,
