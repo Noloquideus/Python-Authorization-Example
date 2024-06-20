@@ -58,3 +58,16 @@ class TokenService:
             raise TokenTimeIsExpiredException
         except jwt.DecodeError:
             raise InvalidTokenException
+
+    @staticmethod
+    async def decode_refresh_token(token: str) -> str:
+        try:
+            payload = jwt.decode(token, settings.REFRESH_SECRET_KEY, algorithms=[settings.ALGORITHM])
+            expire_time = datetime.fromtimestamp(payload["exp"])
+            if expire_time < datetime.now(timezone.utc):
+                raise TokenTimeIsExpiredException
+            return payload
+        except jwt.ExpiredSignatureError:
+            raise TokenTimeIsExpiredException
+        except jwt.DecodeError:
+            raise InvalidTokenException
