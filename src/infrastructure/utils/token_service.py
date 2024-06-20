@@ -69,3 +69,20 @@ class TokenService:
             raise TokenTimeIsExpiredException
         except jwt.DecodeError:
             raise InvalidTokenException
+
+    @staticmethod
+    async def decode_access_token(token: str) -> dict:
+        try:
+            payload = jwt.decode(token, settings.ACCESS_SECRET_KEY, algorithms=[settings.ALGORITHM])
+            return payload
+        except jwt.ExpiredSignatureError:
+            raise TokenTimeIsExpiredException
+        except jwt.InvalidTokenError:
+            raise InvalidTokenException
+
+    @staticmethod
+    async def create_new_access_token(payload: dict) -> str:
+        expire_delta = timedelta(minutes=settings.ACCESS_TTL_MINUTES)
+        payload["exp"] = datetime.now(timezone.utc) + expire_delta
+        new_token = jwt.encode(payload, settings.ACCESS_SECRET_KEY, algorithm=settings.ALGORITHM)
+        return new_token
