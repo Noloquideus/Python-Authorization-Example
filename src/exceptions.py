@@ -44,3 +44,8 @@ class InvalidCredentialsException(DefaultException):
 class TooManyRefreshTokensException(DefaultException):
     def __init__(self):
         super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail="Too many refresh tokens")
+
+
+class InsufficientAccessLevelException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient access level")
