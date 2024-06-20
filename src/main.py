@@ -22,6 +22,7 @@ instrumentator = Instrumentator(
 )
 instrumentator.instrument(app).expose(app)
 
+
 @app.get("/")
 async def root():
     return {"message": "Auth service"}
