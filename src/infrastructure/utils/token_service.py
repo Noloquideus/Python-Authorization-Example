@@ -1,8 +1,6 @@
 import uuid
 from datetime import datetime, timedelta, timezone
-
 import jwt
-
 from src.application.domain.user_domain import UserDto
 from src.config import settings
 from src.exceptions import TokenTimeIsExpiredException, InvalidTokenException
@@ -50,7 +48,7 @@ class TokenService:
     async def decode_verify_token(token: str) -> str:
         try:
             payload = jwt.decode(token, settings.CONFIRM_SECRET_KEY, algorithms=[settings.ALGORITHM])
-            expire_time = datetime.fromtimestamp(payload["exp"])
+            expire_time = datetime.fromtimestamp(payload["exp"]).replace(tzinfo=timezone.utc)
             if expire_time < datetime.now(timezone.utc):
                 raise TokenTimeIsExpiredException
             return payload["sub"]
@@ -63,7 +61,7 @@ class TokenService:
     async def decode_refresh_token(token: str) -> str:
         try:
             payload = jwt.decode(token, settings.REFRESH_SECRET_KEY, algorithms=[settings.ALGORITHM])
-            expire_time = datetime.fromtimestamp(payload["exp"])
+            expire_time = datetime.fromtimestamp(payload["exp"]).replace(tzinfo=timezone.utc)
             if expire_time < datetime.now(timezone.utc):
                 raise TokenTimeIsExpiredException
             return payload
