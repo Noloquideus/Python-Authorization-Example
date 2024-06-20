@@ -28,6 +28,14 @@ class Settings(BaseSettings):
     CONFIRM_SECRET_KEY: str
     CONFIRM_TTL_MINUTES: int
 
+    MAX_REFRESH_TOKENS_IN_DB: int
+    MAX_ACCESS_LEVEL: int
+
+    SUPERADMIN_EMAIL: str
+    SUPERADMIN_USERNAME: str
+    SUPERADMIN_PASSWORD: str
+    SUPERADMIN_ACCESS_LEVEL: int
+
     @property
     def DATABASE_URL(self):
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
